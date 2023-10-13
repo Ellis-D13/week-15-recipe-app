@@ -31,11 +31,11 @@ function App() {
       
       const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`;
       
-      // Fetch the new API. Note: We don't need the options object anymore because the new API doesn't require headers
-      fetch(url)  // Remove `, options` from here
+      // Fetch the API
+      fetch(url) 
         .then(response => response.json())
         .then(data => {
-          // The response structure of the new API has meals in 'data.meals'
+          
           setRecipes(data.meals || []);
           setIsLoading(false);
         })

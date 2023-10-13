@@ -7,7 +7,7 @@ function AddRecipeForm(props) {
     };
     
     return React.createElement('form', { onSubmit: handleSubmit }, [
-      // Add your input fields here using React.createElement
+      
       React.createElement('button', { type: 'submit' }, 'Add Recipe')
     ]);
   }
