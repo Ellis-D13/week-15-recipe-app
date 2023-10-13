@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Recipe from './components/Recipe';
+//import Recipe from './components/Recipe';
 import RecipeList from './components/RecipeList';
 import RecipeDetails from './components/RecipeDetails';
 import RecipeForm from './components/RecipeForm';
@@ -29,20 +29,14 @@ function App() {
     if (searchQuery) {  // Only run if there's a query to search
       setIsLoading(true);
       
-      const url = 'https://edamam-food-and-grocery-database.p.rapidapi.com/api/food-database/v2/parser?nutrition-type=cooking&category%5B0%5D=generic-foods&health%5B0%5D=alcohol-free';
-      const options = {
-        method: 'GET',
-        headers: {
-          'X-RapidAPI-Key': '9466ef1099msh9d43d132b2e9fe5p178235jsna2bc2d51ac9d',
-          'X-RapidAPI-Host': 'edamam-food-and-grocery-database.p.rapidapi.com'
-        }
-      };
-
-      fetch(url, options)
+      const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`;
+      
+      // Fetch the new API. Note: We don't need the options object anymore because the new API doesn't require headers
+      fetch(url)  // Remove `, options` from here
         .then(response => response.json())
         .then(data => {
-          // Assuming data.recipes holds the list of recipes
-          setRecipes(data.recipes || []);
+          // The response structure of the new API has meals in 'data.meals'
+          setRecipes(data.meals || []);
           setIsLoading(false);
         })
         .catch(error => {
