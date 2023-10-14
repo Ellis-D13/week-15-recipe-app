@@ -1,16 +1,20 @@
 import React from "react";
-
 const RecipeDetails = ({ recipe, setEditMode, setSelectedRecipe }) => {
   
-  // Log the selected recipe to see its details
-  console.log('Selected Recipe:', recipe);
-
   if (!recipe) {
-    return null; // Return null if no recipe is provided
+    return null; 
   }
-  // best practice: destructure your props to avoid repetitive code 
-  const { title, description, ingredients } = recipe;
-  // industry standard: use JSX over React.createElement() for readability 
+
+  const { strMeal, strInstructions } = recipe;
+
+  // Extract ingredients and measures, then pair them
+  const ingredients = [];
+  for (let i = 1; i <= 20; i++) {
+    if (recipe[`strIngredient${i}`] && recipe[`strMeasure${i}`]) {
+      ingredients.push(`${recipe[`strIngredient${i}`]} - ${recipe[`strMeasure${i}`]}`);
+    }
+  }
+
   const ingredientList = (
     <ul>
       {ingredients.map((ingredient, index) => (
@@ -19,31 +23,25 @@ const RecipeDetails = ({ recipe, setEditMode, setSelectedRecipe }) => {
     </ul>
   );
 
-  const cardBody = (
-    <div className="card-body">
-      <h5 className="card-title">{description}</h5>
-      <p className="card-text">
-        <strong>Ingredients:</strong>
-        {ingredientList}
-      </p>
-      <button className="btn btn-primary" onClick={() => setEditMode(true)}>
-        Edit
-      </button>
-      <button 
-        className="btn btn-secondary ml-2" 
-        onClick={() => setSelectedRecipe(null)}>
-        Close
-      </button>
-    </div>
-  );
-
   return (
     <div className="card mt-4">
-      <div className="card-header">{title}</div>
-      {cardBody}
+      <div className="card-header">{strMeal}</div>
+      <div className="card-body">
+        <h5 className="card-title">{strInstructions}</h5>
+        <div className="card-text">
+          <strong>Ingredients:</strong>
+          {ingredientList}
+        </div>
+        <button className="btn btn-primary" onClick={() => setEditMode(true)}>
+          Edit
+        </button>
+        <button 
+          className="btn btn-secondary ml-2" 
+          onClick={() => setSelectedRecipe(null)}>
+          Close
+        </button>
+      </div>
     </div>
   );
 };
-
-export default RecipeDetails;
-
+export default RecipeDetails; 

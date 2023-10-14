@@ -4,6 +4,8 @@ import RecipeList from './components/RecipeList';
 import RecipeDetails from './components/RecipeDetails';
 import RecipeForm from './components/RecipeForm';
 import SearchForm from './components/SearchForm';
+import 'bootstrap/dist/css/bootstrap.min.css';
+//import Popper from '@popperjs/core';
 
 function App() {
   // State for storing the search query
@@ -19,31 +21,29 @@ function App() {
   const [recipes, setRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Function to add a new recipe, placeholder for now
-  const addRecipe = (newRecipe) => {
-    // Logic to add a new recipe to your database goes here
-    console.log('New recipe:', newRecipe);
-  };
+  // Function to add a new recipe
+  // This function will add the new recipe to the beginning of your recipes state
+  function addRecipe(newRecipe) {
+    const updatedRecipes = [newRecipe, ...recipes];
+    setRecipes(updatedRecipes);
+  }
 
   useEffect(() => {
-    if (searchQuery) {  // Only run if there's a query to search
-      setIsLoading(true);
-      
-      const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`;
-      
-      // Fetch the API
-      fetch(url) 
-        .then(response => response.json())
-        .then(data => {
-          
-          setRecipes(data.meals || []);
-          setIsLoading(false);
-        })
-        .catch(error => {
-          console.error('There was an error fetching the data:', error);
-          setIsLoading(false);
-        });
-    }
+    if (searchQuery !== '')
+    setIsLoading(true);
+    const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`; //template literal syntax
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        // console.log("Static API Response:", data); // Logging the API data here
+        setRecipes(data.meals || []);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the data:', error);
+        setIsLoading(false);
+      });
   }, [searchQuery]);
 
   return (
@@ -62,7 +62,7 @@ function App() {
           selectedRecipe={selectedRecipe}
           setEditMode={setEditMode}
           setSelectedRecipe={setSelectedRecipe}
-          addRecipe={addRecipe} // Pass addRecipe function to the RecipeForm
+          addRecipe={addRecipe} // Pass the addRecipe function to the RecipeForm
         />
       )}
 

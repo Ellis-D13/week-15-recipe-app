@@ -1,14 +1,16 @@
 import React from "react";
-const RecipeList = ({ recipes, isLoading }) => {
+
+const RecipeList = ({ recipes, isLoading, setSelectedRecipe }) => {  // Add setSelectedRecipe to the props
 
   // Log the recipes prop to see the data you're getting
   console.log('Recipes:', recipes);
 
-  // UI Rendering, industry standard, conditional reendering based on the loading status 
+  // UI Rendering, industry standard, conditional rendering based on the loading status 
   if (isLoading) {
     return <p>Loading recipes...</p>;
   }
-  // handle edge cases, like when no data is available
+
+  // Handle edge cases, like when no data is available
   if (recipes.length === 0) {
     return <p>No recipes found.</p>;
   }
@@ -17,9 +19,10 @@ const RecipeList = ({ recipes, isLoading }) => {
     <div>
       <ul>
         {recipes.map((recipe, index) => (
-          // Assuming your recipe object has a 'name' property
-          // If it doesn't, replace 'name' with the correct property
-          <li key={index}>{recipe.name}</li>
+          // Use the 'strMeal' property from the recipe object and add the onClick event
+          <li key={index} onClick={() => setSelectedRecipe(recipe)}>
+            {recipe.strMeal}
+          </li>
         ))}
       </ul>
     </div>
