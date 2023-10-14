@@ -1,20 +1,24 @@
 import React from "react";
-const RecipeDetails = ({ recipe, setEditMode, setSelectedRecipe }) => {
-  
+
+// defining the RecipeDetails funcional component 
+const RecipeDetails = ({ recipe, setEditMode, setSelectedRecipe, deleteRecipe }) => {
+  // if no recipe is proviced, do not render anything 
   if (!recipe) {
     return null; 
   }
-
+  // destructuring the recipe object to get its properties
   const { strMeal, strInstructions } = recipe;
 
-  // Extract ingredients and measures, then pair them
+  // initializing an array to extract ingredients and measures, then pair them
   const ingredients = [];
+  // looping through potential ingredients (up to 20 based on the data structure)
   for (let i = 1; i <= 20; i++) {
+    // if both ingredient and its measure exist, add them to the ingredients array 
     if (recipe[`strIngredient${i}`] && recipe[`strMeasure${i}`]) {
       ingredients.push(`${recipe[`strIngredient${i}`]} - ${recipe[`strMeasure${i}`]}`);
     }
   }
-
+  // creating a JSX unordered list to display the ingredients
   const ingredientList = (
     <ul>
       {ingredients.map((ingredient, index) => (
@@ -22,7 +26,20 @@ const RecipeDetails = ({ recipe, setEditMode, setSelectedRecipe }) => {
       ))}
     </ul>
   );
-
+  // Defining the delete button using React's createElement method
+  const deleteButton = React.createElement('button', {
+    className: 'btn btn-danger ml-2',
+    // On click, trigger the handleDelete function with the recipe's ID
+    onClick: () => handleDelete(recipe.id)
+}, 'Delete');
+// Function to handle the deletion of a recipe
+const handleDelete = (id) => {
+  // Call the deleteRecipe function passed as a prop
+  deleteRecipe(id);
+  // Reset the selected recipe in the main App's state
+  setSelectedRecipe(null);
+};
+  // Returning the JSX to render for this component
   return (
     <div className="card mt-4">
       <div className="card-header">{strMeal}</div>
@@ -40,8 +57,13 @@ const RecipeDetails = ({ recipe, setEditMode, setSelectedRecipe }) => {
           onClick={() => setSelectedRecipe(null)}>
           Close
         </button>
-      </div>
+        <button 
+        className="btn btn-danger ml-2" 
+        onClick={() => handleDelete(recipe.id)}> 
+        Delete
+      </button>
     </div>
-  );
+  </div>
+);
 };
 export default RecipeDetails; 

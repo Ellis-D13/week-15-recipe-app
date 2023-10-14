@@ -28,6 +28,19 @@ function App() {
     setRecipes(updatedRecipes);
   }
 
+  function deleteRecipe(recipeId) {
+    // Filter out the deleted recipe from the local state
+    const updatedRecipes = recipes.filter(recipe => recipe.id !== recipeId);
+    setRecipes(updatedRecipes);
+}
+
+const recipeDetailsComponent = React.createElement(RecipeDetails, {
+  recipe: selectedRecipe,
+  setEditMode: setEditMode,
+  setSelectedRecipe: setSelectedRecipe,
+  deleteRecipe: deleteRecipe
+});
+
   useEffect(() => {
     if (searchQuery !== '')
     setIsLoading(true);
